@@ -28,11 +28,11 @@ namespace CutiesCoop
 
             private static bool IsDropRateAffected(ItemType type)
             {
-                if (type == ItemType.Equip &&
-                    type == ItemType.Weapon &&
-                    type == ItemType.Equip &&
-                    type == ItemType.Clue &&
-                    type == ItemType.SkillItem &&
+                if (type == ItemType.Equip ||
+                    type == ItemType.Weapon ||
+                    type == ItemType.Equip ||
+                    type == ItemType.Clue ||
+                    type == ItemType.SkillItem ||
                     type == ItemType.RandomItemBag)
                     return false;
                 else
