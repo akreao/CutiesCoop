@@ -2,14 +2,15 @@
 using Keplerth;
 using Harmony;
 using System.Reflection;
-using UnityEngine;
+using DataBase;
 
 namespace CutiesCoop
 {
     [StaticConstructorOnStartup]
     public static class CutiesCoopInit
     {
-        private const int DROP_RATE = 2;
+        public const int DROP_RATE = 2;
+        static readonly List<ItemType> bannedItemTypes = new List<ItemType> { ItemType.Equip, ItemType.Weapon, ItemType.Clue, ItemType.SkillItem, ItemType.RandomItemBag, ItemType.Placement };
         static CutiesCoopInit()
         {
             HarmonyInstance.Create("com.akreao.cutiescoopmod").PatchAll(Assembly.GetExecutingAssembly());
@@ -28,12 +29,7 @@ namespace CutiesCoop
 
             private static bool IsDropRateAffected(ItemType type)
             {
-                if (type == ItemType.Equip ||
-                    type == ItemType.Weapon ||
-                    type == ItemType.Equip ||
-                    type == ItemType.Clue ||
-                    type == ItemType.SkillItem ||
-                    type == ItemType.RandomItemBag)
+                if (bannedItemTypes.Contains(type))
                     return false;
                 else
                     return true;
