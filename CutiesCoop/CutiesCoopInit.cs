@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Harmony;
 using Keplerth;
-using Harmony;
+using System.Collections.Generic;
 using System.Reflection;
-using DataBase;
 
 namespace CutiesCoop
 {
@@ -10,7 +9,7 @@ namespace CutiesCoop
     public static class CutiesCoopInit
     {
         public const int DROP_RATE = 2;
-        static readonly List<ItemType> bannedItemTypes = new List<ItemType> { ItemType.Equip, ItemType.Weapon, ItemType.Clue, ItemType.SkillItem, ItemType.RandomItemBag, ItemType.Placement };
+        private static readonly List<ItemType> bannedItemTypes = new List<ItemType> { ItemType.Equip, ItemType.Weapon, ItemType.Clue, ItemType.SkillItem, ItemType.RandomItemBag/*, ItemType.Placement*/ };
         static CutiesCoopInit()
         {
             HarmonyInstance.Create("com.akreao.cutiescoopmod").PatchAll(Assembly.GetExecutingAssembly());
@@ -22,17 +21,16 @@ namespace CutiesCoop
             public static bool Prefix(ref ItemData item)
             {
                 if (item.count > 0 && IsDropRateAffected(item.type))
+                {
                     item.count *= DROP_RATE;
+                }
 
                 return true;
             }
 
             private static bool IsDropRateAffected(ItemType type)
             {
-                if (bannedItemTypes.Contains(type))
-                    return false;
-                else
-                    return true;
+                return !bannedItemTypes.Contains(type);
             }
         }
     }
