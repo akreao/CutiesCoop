@@ -71,17 +71,5 @@ namespace CutiesCoop
         {
             return dropRate;
         }
-
-        public bool IsItemAffectedByDropRate(ItemData item)
-        {
-            foreach (int val in allowedItemIDs)
-            {
-                if (item.id == val)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
     }
 }
