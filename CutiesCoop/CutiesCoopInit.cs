@@ -1,7 +1,9 @@
 ﻿using Harmony;
 using Keplerth;
+using System;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace CutiesCoop
 {
@@ -18,6 +20,19 @@ namespace CutiesCoop
             Application.quitting += Application_quitting;
 
             HarmonyInstance.Create(modID).PatchAll(Assembly.GetExecutingAssembly());
+            Root.Instance.Init();
+        }
+
+        [HarmonyPatch(typeof(EscUI), "OkButtonOnClick")]
+        public class EscUI_OkButtonOnClick_Patch
+        {
+            public static void Postfix()
+            {
+                if (Root.Instance.CutiesGUI != null)
+                {
+                    Root.Instance.CutiesGUI.Init();
+                }
+            }
         }
 
         private static void Application_quitting()
@@ -35,6 +50,29 @@ namespace CutiesCoop
                 return true;
             }
         }
+    }
 
+    public class Root : MonoSingleton<Root>
+    {
+        public CutiesGUI CutiesGUI { get; set; }
+
+        public void Init()
+        {
+            SceneManager.activeSceneChanged += OnSceneChange;
+            CutiesGUI = gameObject.AddComponent<CutiesGUI>();
+            CutiesGUI.enabled = false;
+        }
+
+        private void OnSceneChange(Scene from, Scene to)
+        {
+            if (to.name == "TestGame" || to.name == "GameScene")
+            {
+                CutiesGUI.enabled = true;
+            }
+            else
+            {
+                CutiesGUI.enabled = false;
+            }
+        }
     }
 }

@@ -66,10 +66,5 @@ namespace CutiesCoop
                 JsonUtility.FromJsonOverwrite(readConfig, this);
             }
         }
-
-        public int GetDropRate()
-        {
-            return dropRate;
-        }
     }
 }

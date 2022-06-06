@@ -3,14 +3,14 @@ using System;
 
 namespace CutiesCoop
 {
-    internal static class CutiesRates
+    public static class CutiesRates
     {
 
         public static void ApplyDropRate(ref ItemData item)
         {
             if (item.count > 0 && IsDropRateAffected(item))
             {
-                item.count *= CutiesCoopInit.config.GetDropRate();
+                item.count *= CutiesCoopInit.config.dropRate;
             }
         }
 
